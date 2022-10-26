@@ -32,6 +32,21 @@ const Note = () => {
     const [error, setError] = useState(null);
     const [allinfo, setAllinfo] = useState('');
 
+    const modules = {
+        toolbar: [
+            [{ font: [] }],
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            ["bold", "italic", "underline", "strike"],
+            [{ color: [] }, { background: [] }],
+            [{ script: "sub" }, { script: "super" }],
+            ["blockquote", "code-block"],
+            [{ list: "ordered" }, { list: "bullet" }],
+            [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
+            ["link", "image", "video"],
+            ["clean"],
+        ],
+    };
+
     useEffect(() => {
         if (location.note) {
             setTitle(location.note.title)
@@ -55,8 +70,8 @@ const Note = () => {
 
     const handleTitleChange = (e) => {
         setTitle(e.target.value)
-        console.log(e)
     }
+
 
     const handleDescChange = (e) => {
         setDesc(e)
@@ -160,11 +175,14 @@ const Note = () => {
                     <textarea value={desc} placeholder="Start writing" onChange={handleDescChange} onBlur={() => handleUpdateNote('desc')} />
                 </div> */}
                 <div className="quillbody">
-                    <ReactQuill theme="snow" value={desc} onChange={handleDescChange} onBlur={() => handleUpdateNote('desc')} onKeyDown={(e) => {
+                    <ReactQuill theme="snow" value={desc} onChange={handleDescChange} onKeyDown={(e) => {
                         if (e.key === "Enter") {
                             handleUpdateNote('desc');
                         }
-                    }} />
+                    }}
+                        placeholder="Write Something"
+                        modules={modules}
+                    />
                 </div>
             </div>
         </div>

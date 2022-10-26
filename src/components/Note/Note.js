@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArchive, faBackward, faTrash } from '@fortawesome/free-solid-svg-icons'
 import './Note.scss';
@@ -15,8 +15,10 @@ import { noteFormatDate } from './../../utils/helpers';
 
 
 import ReactQuill from 'react-quill';
+import { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css';
-
+// import ImageResize from 'quill-image-resize-module';
+// Quill.register('modules/imageResize', ImageResize);
 
 
 
@@ -32,20 +34,36 @@ const Note = () => {
     const [error, setError] = useState(null);
     const [allinfo, setAllinfo] = useState('');
 
-    const modules = {
-        toolbar: [
-            [{ font: [] }],
-            [{ header: [1, 2, 3, 4, 5, 6, false] }],
-            ["bold", "italic", "underline", "strike"],
-            [{ color: [] }, { background: [] }],
-            [{ script: "sub" }, { script: "super" }],
-            ["blockquote", "code-block"],
-            [{ list: "ordered" }, { list: "bullet" }],
-            [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
-            ["link", "image", "video"],
-            ["clean"],
-        ],
-    };
+    function imageHandler2() {
+        var range = this.quill.getSelection();
+        var value = prompt('What is the image URL');
+        if (value) {
+            this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
+        }
+        console.log("imagedone")
+        console.log(this.quill)
+    }
+
+    const modules = useMemo(() => ({
+        toolbar: {
+            container: [
+                [{ font: [] }],
+                [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                ["bold", "italic", "underline", "strike"],
+                [{ color: [] }, { background: [] }],
+                [{ script: "sub" }, { script: "super" }],
+                ["blockquote", "code-block"],
+                [{ list: "ordered" }, { list: "bullet" }],
+                [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
+                ["link", "image", "video"],
+                ["clean"],
+            ],
+            'handlers': {
+                "image": imageHandler2
+            }
+        }
+        // imageResize: {}
+    }), [])
 
     useEffect(() => {
         if (location.note) {

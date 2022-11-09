@@ -17,13 +17,16 @@ import { noteFormatDate } from './../../utils/helpers';
 import ReactQuill from 'react-quill';
 import { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css';
-// import { ImageResize } from 'quill-image-resize-module';
 import ImageResize from 'quill-image-resize-module-react';
+
 import QuillMarkdown from 'quilljs-markdown';
 import 'quilljs-markdown/dist/quilljs-markdown-common-style.css';
 
+import { ImageDrop } from 'quill-image-drop-module';
+
 Quill.register('modules/markdownOptions', QuillMarkdown);
 Quill.register('modules/imageResize', ImageResize);
+Quill.register('modules/imageDrop', ImageDrop);
 
 
 
@@ -80,8 +83,10 @@ const Note = () => {
         },
         markdownOptions: {},
         imageResize: {
-            modules: ['Resize', 'DisplaySize', 'Toolbar',],
-        }
+            parchment: Quill.import('parchment'),
+            modules: ['Resize', 'DisplaySize', 'Toolbar']
+        },
+        imageDrop: true
     }), [])
 
     useEffect(() => {

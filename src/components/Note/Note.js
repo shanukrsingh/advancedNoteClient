@@ -17,11 +17,14 @@ import { noteFormatDate } from './../../utils/helpers';
 import ReactQuill from 'react-quill';
 import { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css';
-// import ImageResize from 'quill-image-resize-module';
-// Quill.register('modules/imageResize', ImageResize);
+// import { ImageResize } from 'quill-image-resize-module';
+import ImageResize from 'quill-image-resize-module-react';
 import QuillMarkdown from 'quilljs-markdown';
 import 'quilljs-markdown/dist/quilljs-markdown-common-style.css';
+
 Quill.register('modules/markdownOptions', QuillMarkdown);
+Quill.register('modules/imageResize', ImageResize);
+
 
 
 const Note = () => {
@@ -75,8 +78,10 @@ const Note = () => {
                 insertGuy: handleGuy
             }
         },
-        markdownOptions: {}
-        // imageResize: {}
+        markdownOptions: {},
+        imageResize: {
+            modules: ['Resize', 'DisplaySize', 'Toolbar',],
+        }
     }), [])
 
     useEffect(() => {

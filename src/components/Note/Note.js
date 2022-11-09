@@ -19,7 +19,9 @@ import { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css';
 // import ImageResize from 'quill-image-resize-module';
 // Quill.register('modules/imageResize', ImageResize);
-
+import QuillMarkdown from 'quilljs-markdown';
+import 'quilljs-markdown/dist/quilljs-markdown-common-style.css';
+Quill.register('modules/markdownOptions', QuillMarkdown);
 
 
 const Note = () => {
@@ -33,6 +35,16 @@ const Note = () => {
     const [isArchive, setIsArchive] = useState(0);
     const [error, setError] = useState(null);
     const [allinfo, setAllinfo] = useState('');
+
+    const customGuy = () => (
+        <button id="insertGuy" className="ql-insertGuy">
+            <span style="color:blue">xyz</span>
+        </button>
+    );
+
+    function handleGuy() {
+        console.log("guy confirmed")
+    }
 
     function imageHandler2() {
         var range = this.quill.getSelection();
@@ -56,12 +68,14 @@ const Note = () => {
                 [{ list: "ordered" }, { list: "bullet" }],
                 [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
                 ["link", "image", "video"],
-                ["clean"],
+                ["clean"], ["okm"]
             ],
             'handlers': {
-                "image": imageHandler2
+                "image": imageHandler2,
+                insertGuy: handleGuy
             }
-        }
+        },
+        markdownOptions: {}
         // imageResize: {}
     }), [])
 

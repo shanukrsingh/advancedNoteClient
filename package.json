@@ -12,6 +12,7 @@
     "axios": "^0.20.0",
     "moment": "^2.27.0",
     "quill-image-resize-module": "^3.0.0",
+    "quilljs-markdown": "^1.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-quill": "^2.0.0",

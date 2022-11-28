@@ -117,9 +117,9 @@ const Note = () => {
 
     const handleDescChange = (content, delta, source, editor) => {
         setDesc(editor.getHTML())
-        console.log(editor)
+        // console.log(editor)
         var parval = editor.getText()
-        console.log(parval)
+        // console.log(parval)
     }
 
     const handleUpdateNote = async (key) => {

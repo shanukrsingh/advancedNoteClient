@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleDown, faSearch, faPlus, faStar, faStickyNote, faTrash, faInfo } from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faSearch, faPlus, faStar, faStickyNote, faTrash, faInfo, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 import './Sidenavbar.scss';
-import { NavLink, useHistory } from 'react-router-dom'
+import { NavLink, useHistory, Link } from 'react-router-dom'
 import { postRequest } from './../../utils/apiRequests';
 import { BASE_URL, CREATE_NOTE } from './../../utils/apiEndpoints';
 import { NotesContext } from './../../context/context';
@@ -16,12 +16,17 @@ const Sidenavbar = () => {
     const history = useHistory();
     const [error, setError] = useState(null);
 
+    const token = localStorage.getItem('token')
+    const decoded = jwt.verify(token, 'secret123')
+    let email = decoded.email
+    console.log(email)
+
     const handleCreateNote = async () => {
 
-        const token = localStorage.getItem('token')
-        const decoded = jwt.verify(token, 'secret123')
-        const email = decoded.email
-        console.log(email)
+        // const token = localStorage.getItem('token')
+        // const decoded = jwt.verify(token, 'secret123')
+        // const email = decoded.email
+        // console.log(email)
         let query = {
             frontprop: email
         }
@@ -42,17 +47,37 @@ const Sidenavbar = () => {
 
     }
 
+    const handleDropDown = async () => {
+
+    }
+
+
+    const handleLogOut = async () => {
+        localStorage.removeItem('token')
+        console.log("log out")
+        history.push('/login')
+        history.go(0)
+    }
+
+
+
 
     return (
         <div className="sidenavbar">
             <div className="sidenavbar-top">
                 <div className="sidenavbar-top__profile">
                     <div className="profile-icon">
-                        S
+                        {email[0]}
                     </div>
-                    <div className="profile-title">
-                        Shanu Kumar Singh
-                        <FontAwesomeIcon className="icon" icon={faAngleDown} />
+                    <div className="profile-title" onClick={handleLogOut}>
+                        {email}
+                        <FontAwesomeIcon className="icon" icon={faSignOutAlt} onClick={handleLogOut} />
+                        {/* <Link
+                            to="/login"
+                            onClick={handleLogOut}
+                        >
+                            Sign Up
+                        </Link> */}
                     </div>
                 </div>
                 <div className="sidenavbar-top__search">

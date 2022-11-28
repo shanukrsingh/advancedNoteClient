@@ -19,7 +19,7 @@ const Sidenavbar = () => {
     const token = localStorage.getItem('token')
     const decoded = jwt.verify(token, 'secret123')
     let email = decoded.email
-    console.log(email)
+    // console.log(email)
 
     const handleCreateNote = async () => {
 

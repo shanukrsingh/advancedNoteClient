@@ -27,7 +27,7 @@ function App() {
 		if (data.user) {
 			localStorage.setItem('token', data.user)
 			alert('Login successful')
-			history.push('/dashboard')
+			window.location.href('/dashboard')
 		} else {
 			alert('Please check your username and password')
 		}

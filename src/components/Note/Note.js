@@ -41,6 +41,35 @@ const Note = () => {
     const [isArchive, setIsArchive] = useState(0);
     const [error, setError] = useState(null);
     const [allinfo, setAllinfo] = useState('');
+    const [parval, setParval] = useState('');
+
+
+    function findSummary() {
+
+        let url = "https://api-inference.huggingface.co/models/sshleifer/distilbart-cnn-12-6"; // url
+
+
+        var text = parval;
+        console.log("input :")
+        console.log(text);
+
+        fetch(url, {
+            method: "POST", body: JSON.stringify(text), headers: { Authorization: "Bearer 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" }
+        })
+            .then(response => response.json())
+            .then(data => {
+                // let textArea = document.getElementById("result");
+                // // parsing the JSON value to string
+                // textArea.value = JSON.stringify(data);
+                var outp = data[0]["summary_text"]
+                console.log("output")
+                console.log(outp)
+                alert(outp)
+
+            })
+
+
+    }
 
     const customGuy = () => (
         <button id="insertGuy" className="ql-insertGuy">
@@ -118,7 +147,7 @@ const Note = () => {
     const handleDescChange = (content, delta, source, editor) => {
         setDesc(editor.getHTML())
         // console.log(editor)
-        var parval = editor.getText()
+        setParval(editor.getText())
         // console.log(parval)
     }
 
@@ -193,6 +222,9 @@ const Note = () => {
                     Last edited on {noteFormatDate(updatedAt)}
                 </div>
                 <div className="note__header-action-btn">
+                    <div className="action-btn" onClick={findSummary}>
+                        SUMUP
+                    </div>
                     {!isArchive ?
                         (
                             <div className="action-btn" onClick={handleArchiveNote}>

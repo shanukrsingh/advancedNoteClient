@@ -8,13 +8,25 @@ import { postRequest } from './../../utils/apiRequests';
 import { BASE_URL, CREATE_NOTE } from './../../utils/apiEndpoints';
 import { NotesContext } from './../../context/context';
 
+import jwt from 'jsonwebtoken'
+
+
 const Sidenavbar = () => {
     const notesContext = useContext(NotesContext);
     const history = useHistory();
     const [error, setError] = useState(null);
 
     const handleCreateNote = async () => {
-        const response = await postRequest(`${BASE_URL}${CREATE_NOTE}`);
+
+        const token = localStorage.getItem('token')
+        const decoded = jwt.verify(token, 'secret123')
+        const email = decoded.email
+        console.log(email)
+        let query = {
+            frontprop: email
+        }
+
+        const response = await postRequest(`${BASE_URL}${CREATE_NOTE}`, query);
         console.log(response);
         if (response.error) {
             setError(response.error);
@@ -29,6 +41,7 @@ const Sidenavbar = () => {
         }
 
     }
+
 
     return (
         <div className="sidenavbar">

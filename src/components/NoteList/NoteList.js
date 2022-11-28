@@ -10,6 +10,9 @@ import { getRequest } from './../../utils/apiRequests';
 import { NotesContext } from './../../context/context';
 import { listFormatDate } from './../../utils/helpers';
 
+import jwt from 'jsonwebtoken'
+
+
 const NoteList = (props) => {
     const [error, setError] = useState(null)
     const notesContext = useContext(NotesContext);
@@ -30,12 +33,33 @@ const NoteList = (props) => {
             return;
         }
 
-        const response = await getRequest(`${BASE_URL}${endpoint}`)
+        const token = localStorage.getItem('token')
+        const decoded = jwt.verify(token, 'secret123')
+        const email = decoded.email
+
+        let response = await getRequest(`${BASE_URL}${endpoint}`)
         if (response.error) {
             setError(response.error);
             return false;
         }
+
+        let res2 = []
+
+        if (response.length > 0) {
+            response.forEach(element => {
+                console.log(element.someprp);
+                if (element.someprp === email) {
+                    res2.push(element)
+                }
+            });
+        }
+
+        response = res2
+
+
         notesContext.notesDispatch({ type: 'getAllNotesSuccess', payload: response });
+
+
         if (response.length > 0) {
             history.push({
                 pathname: `${match.url}/${response[0]._id}`,
@@ -59,6 +83,7 @@ const NoteList = (props) => {
             <div className="note-list__body">
                 {
                     notesContext.notesState.length > 0 ? notesContext.notesState.map((note) => (
+
                         <NavLink key={note._id} className="note-card" to={
                             {
                                 pathname: `${match.url}/${note._id}`,
